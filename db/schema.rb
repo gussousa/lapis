@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_09_202405) do
+ActiveRecord::Schema.define(version: 2020_12_09_211014) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "texts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "theme_id", null: false
+    t.integer "grade"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["theme_id"], name: "index_texts_on_theme_id"
+    t.index ["user_id"], name: "index_texts_on_user_id"
+  end
 
   create_table "themes", force: :cascade do |t|
     t.string "genre"
@@ -34,9 +44,13 @@ ActiveRecord::Schema.define(version: 2020_12_09_202405) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "cpf"
+    t.string "role"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "texts", "themes"
+  add_foreign_key "texts", "users"
   add_foreign_key "themes", "users"
 end
